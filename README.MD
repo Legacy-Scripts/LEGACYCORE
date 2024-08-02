@@ -24,6 +24,9 @@ git clone https://github.com/Legacy-Framework/LEGACYCORE.git
 
 If you want to use the snippets for quick commands with all the parameters, just follow the procedure below:
 
+![image](https://github.com/user-attachments/assets/2dee74a8-d143-44a9-9960-af7fa55c09e5)
+
+
 - Run this Command
 
 ```sh
