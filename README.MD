@@ -8,7 +8,7 @@
 
 To install Legacy Core and set up the VS Code snippets, you can follow these steps:
 
-1. **Open Command Prompt**
+1. **Open Command Prompt or Visual Code Cmd**
 
    Open Command Prompt (cmd) in the directory where you want to clone the repository.
 
