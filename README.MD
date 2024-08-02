@@ -1,5 +1,5 @@
 <p >
-    <img src="https://img.shields.io/badge/LEGACYCORE-Creator%20%20ENT510-%2363687C" alt="Welcome Badge" />
+    <img src="https://img.shields.io/badge/LEGACYCORE-Creator%20%20ENT510-%23FF6F00" alt="Welcome Badge" />
 </p>
 
 This project leverages the `ox_lib` resource to load and manage various modules dynamically. Below, you will find details on how to utilize the `LEGACYCORE` export to access core data and functions from both the client and server sides.
