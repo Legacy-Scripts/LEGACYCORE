@@ -1,4 +1,6 @@
-# General ExportModules
+<p >
+    <img src="https://img.shields.io/badge/LEGACYCORE-Created%20by%20ENT510-%23D08F6A" alt="Welcome Badge" />
+</p>
 
 This project leverages the `ox_lib` resource to load and manage various modules dynamically. Below, you will find details on how to utilize the `LEGACYCORE` export to access core data and functions from both the client and server sides.
 
@@ -9,6 +11,7 @@ To access the core data, you need to use the `GetCoreData` function provided by 
 ```lua
 local Legacy = exports['LEGACYCORE']:GetCoreData()
 ```
+# General Common / Exports
 
 ```lua
 Available Class = {
@@ -140,7 +143,7 @@ local promise, error = Legacy.DATA:GetPlayerMetadata('accounts')
 if promise then
     print("Player Accounts:" , json.encode(accounts))
 else
-    print("Error retrieving sex:", error )
+    print("Error retrieving Accounts:", error )
 end
 
 ```
@@ -166,7 +169,7 @@ RegisterCommand('data', function(source)
     local JobName = Legacy.DATA:GetPlayerObject().JobName               -- @type string: Player character job name.
     local JobLabel = Legacy.DATA:GetPlayerObject().JobLabel             -- @type string: Player character job label.
     local JobGrade = Legacy.DATA:GetPlayerObject().JobGrade             -- @type number: Player character job grade.
-    local Inventory = Legacy.DATA:GetPlayerObject().inventory             -- @type number: Player character job grade.
+    local Inventory = Legacy.DATA:GetPlayerObject().inventory           -- @type number: Player character job grade.
 
 
     print("is_dead:", is_dead)
