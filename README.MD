@@ -61,8 +61,8 @@ Available Class = {
     Client = [
         MAIN, -- Use Function
         DATA, -- GetPlayerData + Functions Player Data
-        PLAYERCACHE, -- GetPlayerData by State Bag
-        PLAYERCACHE, -- Entity Cache (vehicle / ped)
+        PLAYERCACHE, -- GetPlayerData Cached
+        CACHE,       -- Entity Cache (vehicle / ped)
     ]
 }
 ```
