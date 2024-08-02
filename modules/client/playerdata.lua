@@ -9,7 +9,7 @@ end
     Manage with example tostring(slot).
     Example:
     If you have 5 characters with slots 2, 3, 4, 6, and 7,
-    it will return the lowest number associated with that player.
+    it will return the lowest number associated with that player in this case '2'.
     You can check in LGF_Multicharacter for insights, maneuver the slot in Legacy Core,
     and it is essential to synchronize all player data.
 ]]
