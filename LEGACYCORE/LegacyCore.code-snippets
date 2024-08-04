@@ -1,0 +1,335 @@
+{
+    "Get Player Object (client)": {
+      "scope": "lua",
+      "prefix": "getplayerobj",
+      "body": [
+        "local playerData = Legacy.DATA:GetPlayerObject()",
+        "local is_dead = playerData.is_dead",
+        "local identifier = playerData.identifier",
+        "local charIdentifier = playerData.charIdentifier",
+        "local playerName = playerData.playerName",
+        "local sex = playerData.sex",
+        "local dob = playerData.dob",
+        "local height = playerData.height",
+        "local accounts = playerData.accounts",
+        "local status = playerData.status",
+        "local skin = playerData.skin",
+        "local lastSpawn = playerData.lastSpawn",
+        "local playerGroup = playerData.playerGroup",
+        "local JobName = playerData.JobName",
+        "local JobLabel = playerData.JobLabel",
+        "local JobGrade = playerData.JobGrade"
+      ],
+      "description": "Retrieves a comprehensive set of player-related data as a Lua table. This includes attributes such as whether the player is deceased, player identifier, character identifier, name, gender, date of birth, height, accounts, current status, skin, last spawn time, player group, job name, job label, and job grade."
+    },
+    "Check If Player Is Loaded (client)": {
+      "scope": "lua",
+      "prefix": "isloaded",
+      "body": [
+        "local isLoaded = Legacy.DATA:IsPlayerLoaded()",
+        "if isLoaded then",
+        "    print('Player data is loaded')",
+        "else",
+        "    print('Player data is not loaded')",
+        "end"
+      ],
+      "description": "Checks and reports whether the player data is currently loaded. Useful for ensuring that player-specific data is available before performing operations that require it."
+    },
+    "Get Player Metadata (client)": {
+      "scope": "lua",
+      "prefix": "getmetadata",
+      "body": [
+        "local key = '${1:playerName}'",
+        "local promise, error = Legacy.DATA:GetPlayerMetadata(key)",
+        "if promise then",
+        "    print('Metadata value:', promise)",
+        "else",
+        "    print('Error retrieving metadata:', error)",
+        "end"
+      ],
+      "description": "Retrieves the value of metadata associated with the player for a specified key. Useful for accessing custom player data or configuration settings stored in metadata."
+    },
+    "Get Player Char ID (client)": {
+      "scope": "lua",
+      "prefix": "getcharid",
+      "body": [
+        "local playerCharId = Legacy.DATA:GetPlayerCharId()",
+        "print('The player is in slot ID: ' .. playerCharId)"
+      ],
+      "description": "Obtains the character slot ID for the player, indicating the specific character slot used by the player within the game."
+    },
+    "Get Client ID (client)": {
+      "scope": "lua",
+      "prefix": "getclientid",
+      "body": [
+        "local clientId = Legacy.MAIN:GetID()",
+        "print('Client ID:', clientId)"
+      ],
+      "description": "Retrieves the client-side unique identifier for the player. This ID is used for tracking or differentiating between client sessions."
+    },
+    "Get Player Ped (client)": {
+      "scope": "lua",
+      "prefix": "getplayerped",
+      "body": [
+        "local playerPed = Legacy.MAIN:GetPlayerPed()",
+        "print('Player Ped entity:', playerPed)"
+      ],
+      "description": "Fetches the pedestrian (ped) entity associated with the player. This entity represents the player's character in the game world."
+    },
+    "Teleport Player (client)": {
+      "scope": "lua",
+      "prefix": "teleportplayer",
+      "body": [
+        "local coords = ${1:vector4(0,0,0,0)}",
+        "Legacy.MAIN:TeleportPlayer(coords.xyzw)"
+      ],
+      "description": "Teleports the player to specified coordinates in the game world. The teleportation includes optional heading to orient the player’s direction upon arrival."
+    },
+    "Get Player Coordinates (client)": {
+      "scope": "lua",
+      "prefix": "getplayercoords",
+      "body": [
+        "local coords = Legacy.MAIN:GetPlayerCoords()",
+        "print('Player Coordinates:', coords)"
+      ],
+      "description": "Retrieves and displays the current coordinates of the player's ped entity. Useful for tracking the player's location in the game world."
+    },
+    "Get Vehicle Cache LGF CACHE (client)": {
+      "scope": "lua",
+      "prefix": "getvehiclecache",
+      "body": [
+        "local vehicleCache = Legacy.CACHE:GetCache('vehicle')",
+        "if vehicleCache then",
+        "    print(string.format('Vehicle Name: %s', vehicleCache.name))",
+        "    print(string.format('Vehicle Model: %d', vehicleCache.model))",
+        "    print(string.format('Vehicle Speed: %.2f', vehicleCache.speed))",
+        "    print(string.format('Vehicle Plate: %s', vehicleCache.plate))",
+        "else",
+        "    print('Not in vehicle or no vehicle data available.')",
+        "end"
+      ],
+      "description": "Retrieves cached data about the vehicle currently being driven by the player. Includes details such as vehicle name, model, speed, and license plate."
+    },
+    "Get Ped Cache LGF CACHE (client)": {
+      "scope": "lua",
+      "prefix": "getpedcache",
+      "body": [
+        "local pedCache = Legacy.CACHE:GetCache('ped')",
+        "if pedCache then",
+        "    print(string.format('Ped Name: %s', pedCache.name))",
+        "    print(string.format('Ped Model: %d', pedCache.model))",
+        "    print(string.format('Ped Coordinates: %.2f, %.2f, %.2f', pedCache.coords.x, pedCache.coords.y, pedCache.coords.z))",
+        "else",
+        "    print('No ped data available.')",
+        "end"
+      ],
+      "description": "Retrieves cached data about the ped (character) currently controlled by the player. Provides information such as ped name, model, and current coordinates."
+    },
+    "Get Player Data Cached (client)": {
+      "scope": "lua",
+      "prefix": "cache",
+      "body": [
+        "local Legacy = exports['LEGACYCORE']:GetCoreData()",
+        "local ID = GetPlayerServerId(NetworkGetPlayerIndexFromPed(cache.ped))",
+        "local PlayerCache = Legacy.PLAYERCACHE[ID]",
+        "print(json.encode(PlayerCache, { indent = true }))"
+      ],
+      "description": "Prints out the cache data associated with the player. Useful for debugging or inspecting player cache data by converting it into a readable JSON format."
+    },
+    "Get Player Data By Slot (Server)": {
+      "scope": "lua",
+      "prefix": "getplayerdatabyslot",
+      "body": [
+        "local src = ${1:source}",
+        "local playerData = Legacy.DATA:GetPlayerDataBySlot(src)",
+        "if playerData then",
+          "    print(json.encode(playerData, { indent = true }))",
+        "else",
+        "    print('No player data found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the full player data based on the source identifier and slot. Useful for accessing detailed information about a player identified by their source ID."
+    },
+    "Get Player Char Slot (Server)": {
+      "scope": "lua",
+      "prefix": "getplayercharslot",
+      "body": [
+        "local src = ${1:source}",
+        "local charSlot = Legacy.DATA:GetPlayerCharSlot(src)",
+        "if charSlot then",
+        "    print('Character Slot ID:', charSlot)",
+        "else",
+        "    print('No character slot found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the character slot identifier based on the player's source identifier. This function is useful for determining the character slot associated with a player."
+    },
+    "Get Player Job Data (Server)": {
+      "scope": "lua",
+      "prefix": "getplayerjobdata",
+      "body": [
+        "local src = ${1:source}",
+        "local jobData = Legacy.DATA:GetPlayerJobData(src)",
+        "if jobData then",
+        "    print(string.format('Job Name: %s', jobData.JobName))",
+        "    print(string.format('Job Label: %s', jobData.JobLabel))",
+        "    print(string.format('Job Grade: %d', jobData.JobGrade))",
+        "else",
+        "    print('No job data found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves job-related data for the player identified by the source identifier. This includes the job name, job label, and job grade."
+    },
+    "Get Player Group (Server)": {
+      "scope": "lua",
+      "prefix": "getplayergroup",
+      "body": [
+        "local src = ${1:source}",
+        "local playerGroup = Legacy.DATA:GetPlayerGroup(src)",
+        "if playerGroup then",
+        "    print('Player Group:', playerGroup)",
+        "else",
+        "    print('No group found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the group associated with the player's character based on their source identifier. This is useful for determining the group or faction the player belongs to."
+    },
+    "Get Player Name (Server)": {
+      "scope": "lua",
+      "prefix": "getplayername",
+      "body": [
+        "local src = ${1:source}",
+        "local playerName = Legacy.DATA:GetName(src)",
+        "if playerName then",
+        "    print('Player Name:', playerName)",
+        "else",
+        "    print('No name found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the character name for the player identified by the source identifier. Useful for obtaining the player's character name."
+    },
+    "Get Player Gender (Server)": {
+      "scope": "lua",
+      "prefix": "getplayergender",
+      "body": [
+        "local src = ${1:source}",
+        "local playerGender = Legacy.DATA:GetGender(src)",
+        "if playerGender then",
+        "    print('Player Gender:', playerGender)",
+        "else",
+        "    print('No gender found for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the gender of the player's character based on the source identifier. The gender is represented as 'm' for male or 'f' for female."
+    },
+    "Get Player Inventory Data (Server)": {
+      "scope": "lua",
+      "prefix": "getplayerinventory",
+      "body": [
+        "local src = ${1:source}",
+        "local inventoryData = Legacy.DATA:GetInventoryData(src)",
+        "if inventoryData then",
+        "    print(json.encode(inventoryData, { indent = true }))",
+        "else",
+        "    print('No inventory data available for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the inventory data for the player's character based on the source identifier. Provides details of the items in the player's inventory."
+    },
+    "Get Player Account Data (Server)": {
+      "scope": "lua",
+      "prefix": "getplayeraccount",
+      "body": [
+        "local src = ${1:source}",
+        "local accountData = Legacy.DATA:GetPlayerAccount(src)",
+        "if accountData then",
+        "    print(json.encode(accountData, { indent = true }))",
+        "else",
+        "    print('No account data available for the provided source identifier.')",
+        "end"
+      ],
+      "description": "Retrieves the accounts data (including money and bank details) for the player's character based on the source identifier."
+    },
+    "Set Player Data (Server)": {
+      "scope": "lua",
+      "prefix": "setplayerdata",
+      "body": [
+        "local src = ${1:source}",
+        "local key = '${2:key}'",
+        "local value = ${3:value}",
+        "local success = Legacy.DATA:SetPlayerData(src, key, value)",
+        "if success then",
+        "    print('Player data updated successfully.')",
+        "else",
+        "    print('Failed to update player data.')",
+        "end"
+      ],
+      "description": "Sets specific data for a player identified by source identifier. Updates the specified key with the given value."
+    },
+    "PlayerLogout (Client)": {
+        "scope": "lua",
+        "prefix": "playerlogout",
+        "body": [
+            "AddEventHandler('LegacyCore:PlayerLogout', function()",
+            "    print('The player has logged out.')",
+            "    -- Add code here to handle player logout",
+            "end)"
+        ],
+        "description": "Triggered when the player logs out. This event can be used to manage actions to be performed when the player disconnects or uses a logout command."
+    },
+    "PlayerLoaded (Client)": {
+        "scope": "lua",
+        "prefix": "playerloaded",
+        "body": [
+            "AddEventHandler('LegacyCore:PlayerLoaded', function(slot, playerdata, playerNew)",
+            "    print(string.format('Player Loaded With Slot Used %s', slot))",
+            "    print('Player Data:', json.encode(playerdata, { indent = true, sort_keys = true }))",
+            "end)"
+        ],
+        "description": "Triggered when the player is fully loaded. This event can be used to perform initial actions when the player enters the game and their character is ready."
+    },
+    "PlayerLogout (Server)": {
+        "scope": "lua",
+        "prefix": "playerlogoutserver",
+        "body": [
+            "RegisterNetEvent('LegacyCore:PlayerLogout')",
+            "AddEventHandler('LegacyCore:PlayerLogout', function()",
+            "    local source = data.source",
+            "    print('The player with ID ' .. source .. ' has logged out.')",
+            "    -- Add code here to handle player logout on the server side",
+            "end)"
+        ],
+        "description": "Triggered when the player logs out. This server-side event is useful for synchronizing the player's disconnection with the server and handling necessary cleanup."
+    },
+    "PlayerLoaded (Server)": {
+        "scope": "lua",
+        "prefix": "playerloadedserver",
+        "body": [
+            "RegisterNetEvent('LegacyCore:PlayerLoaded')",
+            "AddEventHandler('LegacyCore:PlayerLoaded', function(slot, data, newPlayer)",
+            "    local source = data.source",
+            "    print(string.format('Player with ID %s and SLOT %s loaded in server', source, slot))",
+            "    print(string.format('Player Data for source %s', source), json.encode(data, { indent = true }))",
+            "    -- Add code here to handle player character initialization on the server side",
+            "end)"
+        ],
+        "description": "Triggered when the player is fully loaded. This server-side event is useful for synchronizing the player's entry with the server and performing any necessary server-side initializations."
+    },
+    "Import Legacy Core (Shared)": {
+        "scope": "lua",
+        "prefix": "core",
+        "body": [
+            "local Legacy = exports['LEGACYCORE']:GetCoreData()"
+        ],
+        "description": "Imports the LegacyCore module and retrieves the core data. This is used to access shared functions and data of the Legacy framework."
+    },
+    "Import Legacy Core (Alternative Syntax)": {
+        "scope": "lua",
+        "prefix": "corealt",
+        "body": [
+            "local Legacy = exports.LEGACYCORE:GetCoreData()"
+        ],
+        "description": "Imports the LegacyCore module using an alternative syntax. This snippet is useful if the module is exported without using square brackets."
+    }
+  }
+  
