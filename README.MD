@@ -5,7 +5,7 @@
 # Legacy Core Installation
 
 ## Installing Legacy Core
-
+d
 To install Legacy Core and set up the VS Code snippets, you can follow these steps:
 
 1. **Open Command Prompt or Visual Code Cmd**
