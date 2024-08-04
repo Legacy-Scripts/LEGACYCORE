@@ -3,7 +3,10 @@ game 'gta5'
 lua54 'yes'
 
 author 'ENT510'
-version '1.0.01'
+version '1.0.0'
+
+
+repository 'https://github.com/Legacy-Framework/LEGACYCORE'
 
 shared_script {'initcore.lua'}
 shared_scripts {
