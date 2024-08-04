@@ -23,9 +23,9 @@ function Legacy.MAIN:GetPlayerCount()
     return #GetPlayers()
 end
 
-function Legacy.MAIN:IsPlayerOnline(playerId)
+function Legacy.MAIN:IsPlayerOnline(source)
     for _, player in ipairs(GetPlayers()) do
-        if tostring(player) == tostring(playerId) then
+        if tostring(player) == tostring(source) then
             return true
         end
     end

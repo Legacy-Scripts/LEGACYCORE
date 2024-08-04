@@ -13,6 +13,7 @@ RegisterNetEvent('LegacyCore:PlayerLogout', function()
     local SHARED = require 'modules.shared.shared_functions'
     if not UTILS:IsEventAuthorized('LegacyCore:PlayerLogout') then
         print(('Unauthorized attempt to trigger %s by %s'):format('LegacyCore:PlayerLogout', src))
+
         return
     end
 
@@ -28,6 +29,7 @@ RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data)
     local src = source
     if not UTILS:IsEventAuthorized('LegacyCore:PlayerLoaded') then
         print(('Unauthorized attempt to trigger %s by %s'):format('LegacyCore:PlayerLoaded', src))
+
         return
     end
 
@@ -50,7 +52,6 @@ end
 function CHECK:SetPaycheck(src, slot)
     local isOnline = Legacy.MAIN:IsPlayerOnline(src)
     local PlayerData = Legacy.DATA:GetPlayerDataBySlot(src)
-
 
     if not IsLoaded[src] then return end
 

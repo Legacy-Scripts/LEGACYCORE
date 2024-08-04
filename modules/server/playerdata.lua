@@ -19,8 +19,7 @@ end
 function Legacy.DATA:GetPlayerDataBySlot(src)
     local identifier = GetPlayerIdentifierByType(src, 'license')
     local slot = Legacy.DATA:GetSlotSelected(src)
-    local playerDatats = MySQL.query.await('SELECT * FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?',
-        { identifier, slot })
+    local playerDatats = MySQL.query.await('SELECT * FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slot })
     return playerDatats[1]
 end
 
@@ -50,7 +49,6 @@ function Legacy.DATA:GetPlayerJobData(src)
     if Identifier and JobName and JobLabel then
         if JobName == 'unemployed' then JobGrade = 0 end
         local JobData = { JobName = JobName, JobLabel = JobLabel, JobGrade = JobGrade }
-
         return JobData
     else
         return warn('Table is Empty!!')
@@ -119,7 +117,7 @@ end
 ---@param key string - Data key to be updated
 ---@param value any - New value for the key
 ---@param slot string - Character slot
----@return boolean - True if successful, false otherwise
+---@return boolean? - True if successful, false otherwise
 function Legacy.DATA:SetPlayerData(src, key, value, slot)
     if not src or not key or not value then return warn('Invalid parameters') end
     local playerData = Legacy.DATA:GetPlayerDataBySlot(src)
@@ -136,7 +134,7 @@ end
 ]]
 ---@param src number - Source of the player
 ---@param slot string - Character slot to check
----@return boolean - True if the character exists, false otherwise
+---@return boolean? - True if the character exists, false otherwise
 function Legacy.DATA:GetCharacterExist(src, slot)
     local identifier = GetPlayerIdentifierByType(src, 'license')
     local exists = MySQL.query.await(
@@ -154,16 +152,16 @@ function Legacy.DATA:GetFirstAvailableSlot(src)
     local identifier = GetPlayerIdentifierByType(src, 'license')
 
     for slotNumber = 1, maxSlots do
-        local exists = MySQL.query.await(
-        'SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?',
-            { identifier, slotNumber })
-        if exists[1].count > 0 then
+        local exists = MySQL.query.await('SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slotNumber })
+        print(json.encode(exists))
+        if exists[1].count == 1 then
             return tostring(slotNumber)
         end
     end
 
     return tostring(1)
 end
+
 
 lib.callback.register('LegacyCore:DATA:GetPlayerDataBySlot', function(source)
     return Legacy.DATA:GetPlayerDataBySlot(source)
@@ -180,11 +178,9 @@ lib.callback.register('LegacyCore:GetPlayerStatus', function(source)
 
     local Identifier = playerData.identifier
     local slot = Legacy.DATA:GetSlotSelected(source)
-
     if not slot then return nil end
 
-    local statusDataResult = MySQL.query.await(
-    'SELECT status FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { Identifier, slot })
+    local statusDataResult = MySQL.query.await('SELECT status FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { Identifier, slot })
     if not statusDataResult or not statusDataResult[1] or not statusDataResult[1].status then
         print(("Failed to retrieve Player data for identifier: %s and slot: %s"):format(Identifier, slot))
         return nil
