@@ -67,22 +67,30 @@ local function IsAdmin(identifier)
     local defaultGroup = Config.GroupData.FirstGroupAssigned
     local playerGroup = defaultGroup
 
-    -- Check if the identifier matches any admin identifier
-    local isAdmin = false
-    for _, adminIdentifier in ipairs(Config.AdminIdentifier) do
+    local IdentifierAllowed = json.decode(GetConvar('LegacyCore.Admins', '[]'))
+
+    for _, adminData in ipairs(IdentifierAllowed) do
+        local adminIdentifier = adminData[1]
+        local adminGroup = adminData[2] or defaultGroup
+
         if identifier == adminIdentifier then
-            isAdmin = true
+            playerGroup = adminGroup
             break
         end
     end
 
-    if isAdmin then
-        playerGroup = 'admin'
-    elseif not tableIncludes(Config.GroupData.GroupCore, playerGroup) then
+
+    if not tableIncludes(Config.GroupData.GroupCore, playerGroup) then
         playerGroup = defaultGroup
     end
+
     return playerGroup
 end
+
+
+exports('GetResponseAdmin', IsAdmin)
+
+
 
 RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, name, dob, appearance, slot)
     local identifier = GetPlayerIdentifierByType(src, 'license')
@@ -100,7 +108,7 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
     local existingCharIdentifiers = MySQL.query.await('SELECT `charIdentifier` FROM `users` WHERE `identifier` = ?',
         { identifier })
 
-    local newCharIdentifier =slot or GenerateNewCharIdentifier(existingCharIdentifiers)
+    local newCharIdentifier = slot or GenerateNewCharIdentifier(existingCharIdentifiers)
 
     local playerGroup = IsAdmin(identifier)
 
@@ -113,9 +121,12 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
     local insertQuery =
     [[ INSERT INTO `users` (`identifier`, `charIdentifier`, `sex`, `dob`, `height`, `playerName`, `playerGroup`, `JobName`, `JobLabel`, `skin`,`accounts` ,`is_dead`,`status` ,`JobGrade` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ]]
 
-    MySQL.rawExecute(insertQuery,{ identifier, newCharIdentifier, sex, dob, height, name, playerGroup, jobName, jobLabel, appearance, accounts, is_dead, status, jobGrade })
+    MySQL.rawExecute(insertQuery,
+        { identifier, newCharIdentifier, sex, dob, height, name, playerGroup, jobName, jobLabel, appearance, accounts,
+            is_dead, status, jobGrade })
 
-    SHARED.DebugData(("Created new record with charIdentifier '%s' for player %s with group %s and job %s"):format( newCharIdentifier, identifier, playerGroup, jobName))
+    SHARED.DebugData(("Created new record with charIdentifier '%s' for player %s with group %s and job %s"):format(
+        newCharIdentifier, identifier, playerGroup, jobName))
     Wait(2000)
     local PlayerData = {
         identifier = identifier,
@@ -135,7 +146,7 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
         source = src,
         inventory = {},
     }
-    lib.TriggerClientEvent('LegacyCore:LGF_OxCharacter:RiempiTable',src ,PlayerData)
+    lib.TriggerClientEvent('LegacyCore:LGF_OxCharacter:RiempiTable', src, PlayerData)
     -- StartInventoryPack(src)
 end)
 

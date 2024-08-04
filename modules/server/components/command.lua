@@ -175,10 +175,9 @@ lib.addCommand(Config.Command.SetGroup, {
 
         if not Legacy.MAIN:IsPlayerOnline(targetPlayer) then
             if not isConsole then
-                NOTIFY:SendServerNotification(source, LANG.CoreLang('PlayerNotOnline_Notification_Title'),
-                    LANG.CoreLang('PlayerNotOnline_Notification_Message'):format(targetPlayer), 'info', 5000, 'inform')
+                NOTIFY:SendServerNotification(source, LANG.CoreLang('PlayerNotOnline_Notification_Title'), LANG.CoreLang('PlayerNotOnline_Notification_Message'):format(targetPlayer), 'info', 5000, 'inform')
             else
-                print(LANG.CoreLang('PlayerNotOnline_Notification_Message'):format(targetPlayer))
+                print(string.format('Player with ID %s is not online', targetPlayer))
             end
             return
         end
@@ -222,5 +221,4 @@ lib.addCommand(Config.Command.MyInfo, {
 }, function(source, args, raw)
     local PlayerData = Legacy.DATA:GetPlayerDataBySlot(source)
     lib.triggerClientEvent('LegacyCore:PrintPlayerInfo', source, PlayerData)
-    
 end)

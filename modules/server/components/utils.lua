@@ -95,8 +95,10 @@ local function CheckForIncompatibleResources()
     end
 end
 
-
-
 local timer = lib.timer(10000, function()
     CheckForIncompatibleResources()
 end)
+
+
+
+

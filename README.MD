@@ -26,12 +26,12 @@ If you want to use the snippets for quick commands with all the parameters, just
 
 ![image](https://github.com/user-attachments/assets/2dee74a8-d143-44a9-9960-af7fa55c09e5)
 
-
 - Run this Command
 
 ```sh
 git clone https://github.com/Legacy-Framework/LEGACYCORE.git && move LEGACYCORE\LegacyCore.code-snippets C:\Users\user\AppData\Roaming\Code\User\snippets\
 ```
+
 This command will clone the repository and immediately move the snippets file to the appropriate directory for VS Code.
 
 Notes
@@ -49,6 +49,7 @@ To access the core data, you need to use the `GetCoreData` function provided by 
 ```lua
 local Legacy = exports['LEGACYCORE']:GetCoreData()
 ```
+
 # General Common / Exports
 
 ```lua
@@ -316,3 +317,76 @@ In this example:
 Command: /pedcache
 Function: Retrieves and prints various ped details including health, armor, weapon, and coordinates.
 Output: Displays the ped's health, armor, weapon, and coordinates in a formatted manner if data is available; otherwise, it indicates that no ped data is available.
+
+## LegacyCore Configuration Convars
+
+The following `convars` are used to configure various aspects of the LEGACYCORE framework. Each ConVar serves a specific purpose and is set using the setr command.
+
+### LegacyCore.Locales
+
+Specifies the localization language for the LEGACYCORE framework. This setting determines the language in which the script will operate.
+
+```cfg
+setr LegacyCore.Locales "en"
+```
+
+### LegacyCore.EnablePVPMode
+
+Enables or disables Player vs Player (PvP) mode in the world.
+
+```cfg
+setr LegacyCore.EnablePVPMode "true"
+```
+
+#### Supported Values:
+`true` : Enables PvP mode.
+`false`: Disables PvP mode.
+
+### LegacyCore.DisableWantedLevel
+
+Controls whether the Wanted Level system is disabled for players.
+
+```cfg
+setr LegacyCore.DisableWantedLevel "true"
+```
+
+Supported Values:
+
+`true` : Disables the Wanted Level system.
+`false`: Enables the Wanted Level system.
+
+#### LegacyCore.Admins
+
+Defines a list of player licenses and their associated groups. This configuration is used to assign specific roles or permissions to players based on their license.
+
+Usage:
+
+```cfg
+set LegacyCore.Admins [
+    ["license:5c54fbccfc7d92223ebc3e63fec67771759a704a", "admin"],
+    ["license:anotherlicense", "moderator"],
+    ["license:someotherlicense"]
+]
+```
+
+#### Format:
+
+A `JSON` array of arrays.
+Each sub-array should contain:
+A license identifier `(string)`.
+An optional group name `(string)`. If not provided, the default group configured in the core will be used.
+
+## GetResponseAdmin
+
+This is a `common` replace for retrieve directly the group associated at the identifier 
+
+```lua
+local ResponseData = exports['LEGACYCORE']:GetResponseAdmin("license:5c54fbccfc7d92223ebc3e63fec67771759a704a")
+print('Player Group:', json.encode(ResponseData))
+```
+
+#### How It Works
+`License Matching`: The function checks if the given license matches any entry in the LegacyCore.Admins ConVar.
+`Group Assignment`:If a match is found, the associated group is assigned to the player. If no group is specified for a matching license, the default group is assigned.
+
+Require Parameters `Player License`

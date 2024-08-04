@@ -1,15 +1,16 @@
 Config = {}
 
--- Localization setting
-Config.Locales = 'it'
+
+
 -- Core configuration information
 Config.CoreInfo = {
+    Locales            = GetConvar('LegacyCore.Locales', 'it'),
+    -- Enable or Disable PVP mode for attacking all other players
+    EnablePVPmode      = GetConvar('LegacyCore.EnablePVPMode', "true"),
+    -- Disable Wanted Level in server
+    DisableWantedLevel = GetConvar('LegacyCore.DisableWantedLevel', "true"),
     -- Enable debug print and other data
     EnableDebug        = true,
-    -- Enable or Disable PVP mode for attacking all other players
-    EnablePVPmode      = true,
-    -- Disable Wanted Level in server
-    DisableWantedLevel = true,
     -- Status data configuration
     StatusData         = {
         -- Enable decrease for hunger and thirst
@@ -28,7 +29,7 @@ Config.CoreInfo = {
         -- Enable or disable payment for players
         EnablePaycheck    = true,
         -- Time in seconds for paycheck
-        ThicknessPaycheck = 1000
+        ThicknessPaycheck = 20
     }
 }
 
@@ -63,11 +64,6 @@ Config.ConnectionData = {
     CheckLicense = true
 }
 
--- Admin identifiers with direct access to the admin group
-Config.AdminIdentifier = {
-    'license:5c54fbccfc7d92223ebc3dwawe63fec67771759a704a'
-}
-
 -- Database configuration
 Config.QueryData = {
     -- Specific database name
@@ -92,7 +88,7 @@ Config.GroupData = {
     -- Default group when player creates a new character
     FirstGroupAssigned = 'player',
     -- Framework groups
-    GroupCore          = { 'admin', 'mod', 'player' },
+    GroupCore          = { 'owner', 'admin', 'mod', 'player' },
     -- Job data settings
     JobData            = {
         -- First job assigned to a player
@@ -104,8 +100,10 @@ Config.GroupData = {
     },
     -- Admin group settings
     AdminGroup         = {
-        ['admin'] = true, -- Admin
-        ['mod']   = false -- Moderator
+        ['owner']  = true, -- Owner
+        ['admin']  = true, -- Admin
+        ['mod']    = true, -- Moderator
+        ['player'] = false -- Player
     }
 }
 

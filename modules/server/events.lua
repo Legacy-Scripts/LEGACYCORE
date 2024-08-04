@@ -6,6 +6,12 @@ AddEventHandler('playerDropped', function()
     local src = source
     TriggerEvent('LegacyCore:PlayerLogout', src)
     lib.TriggerClientEvent('LegacyCore:PlayerLogout', src)
+
+    if IsLoaded[src] then
+        IsLoaded[src] = false
+    else
+        print('Player data not saved because player is not loaded.')
+    end
 end)
 
 RegisterNetEvent('LegacyCore:PlayerLogout', function()
@@ -13,7 +19,6 @@ RegisterNetEvent('LegacyCore:PlayerLogout', function()
     local SHARED = require 'modules.shared.shared_functions'
     if not UTILS:IsEventAuthorized('LegacyCore:PlayerLogout') then
         print(('Unauthorized attempt to trigger %s by %s'):format('LegacyCore:PlayerLogout', src))
-
         return
     end
 
@@ -44,6 +49,8 @@ end)
 exports('isLoadedServer', function(src)
     return IsLoaded[src]
 end)
+
+
 
 function Legacy.DATA:GetSlotSelected(source)
     return Slots[source]
