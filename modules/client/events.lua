@@ -34,3 +34,4 @@ end)
 RegisterNetEvent('LegacyCore:LoadSkin', function(appearance)
     exports['fivem-appearance']:setPlayerAppearance(appearance)
 end)
+

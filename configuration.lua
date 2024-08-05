@@ -1,7 +1,5 @@
 Config = {}
 
-
-
 -- Core configuration information
 Config.CoreInfo = {
     Locales            = GetConvar('LegacyCore.Locales', 'it'),
@@ -112,6 +110,6 @@ Config.ReturnIsDead = function()
     if GetResourceState('ars_ambulancejob'):find('start') then
         return LocalPlayer.state.dead
     else
-        return IsEntityDead(cache.ped)
+
     end
 end

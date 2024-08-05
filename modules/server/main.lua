@@ -15,10 +15,6 @@ function Legacy.MAIN:GetPlayers()
     return players
 end
 
-function Legacy.MAIN:GetNameIDE(src)
-    return GetPlayerName(src)
-end
-
 function Legacy.MAIN:GetPlayerCount()
     return #GetPlayers()
 end

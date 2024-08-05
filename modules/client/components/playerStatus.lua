@@ -52,13 +52,10 @@ AddEventHandler('LegacyCore:PlayerLoaded', function(slot, playerdata, new)
         Legacy.PLAYERSTATUS.Hunger = playerdata.status.hunger
 
         SLOT = slot
-        PlayerStatus[SLOT] = {
-            hunger = Legacy.PLAYERSTATUS.Hunger,
-            thirst = Legacy.PLAYERSTATUS.Thirst,
-        }
+        
+        PlayerStatus[SLOT] = { hunger = Legacy.PLAYERSTATUS.Hunger, thirst = Legacy.PLAYERSTATUS.Thirst }
 
         LocalPlayer.state:set('GetCharStatus', PlayerStatus, true)
-        print('State bag set:', json.encode(PlayerStatus))
     end
 end)
 
@@ -78,7 +75,8 @@ if Config.CoreInfo.StatusData.EnableDecrease then
         while true do
             Wait(30000)
             if Legacy.DATA:IsPlayerLoaded() then
-                TriggerServerEvent('Legacy:QUERY:SavePlayerStatus', cache.serverId, Legacy.PLAYERSTATUS.Hunger,Legacy.PLAYERSTATUS.Thirst)
+                TriggerServerEvent('Legacy:QUERY:SavePlayerStatus', cache.serverId, Legacy.PLAYERSTATUS.Hunger,
+                    Legacy.PLAYERSTATUS.Thirst)
                 PlayerStatus[SLOT] = {
                     hunger = Legacy.PLAYERSTATUS.Hunger,
                     thirst = Legacy.PLAYERSTATUS.Thirst,
@@ -90,10 +88,7 @@ if Config.CoreInfo.StatusData.EnableDecrease then
 end
 
 
-RegisterCommand('stats', function()
-    local MyStats = LocalPlayer.state.GetCharStatus
-    print(json.encode(MyStats))
-end)
+
 
 exports('GetPlayerHunger', function() return Legacy.PLAYERSTATUS.Hunger end)
 exports('GetPlayerThirst', function() return Legacy.PLAYERSTATUS.Thirst end)

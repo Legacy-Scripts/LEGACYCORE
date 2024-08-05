@@ -67,6 +67,16 @@ function Legacy.DATA:GetPlayerGroup(src)
     return PlayerGroup
 end
 
+-- ---@param src number - Source of the player
+-- ---@return string | nil - Player group or nil if not found
+-- function Legacy.DATA:GetPlayerGroup(src)
+--     local Identifier =  GetPlayerIdentifierByType(src, 'license')
+--     local PlayerGroup = exports['LEGACYCORE']:GetResponseAdmin(Identifier)
+--     if not PlayerGroup then return warn('Player Group not found!') end
+--     return PlayerGroup
+-- end
+
+
 --[[
     Legacy.DATA:GetName(src)
 ]]
@@ -152,12 +162,10 @@ end
 function Legacy.DATA:GetFirstAvailableSlot(src)
     local maxSlots = 10
     local identifier = GetPlayerIdentifierByType(src, 'license')
-
     for slotNumber = 1, maxSlots do
         local exists = MySQL.query.await(
             'SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?',
             { identifier, slotNumber })
-        print(json.encode(exists))
         if exists[1].count == 1 then
             return tostring(slotNumber)
         end
@@ -165,9 +173,6 @@ function Legacy.DATA:GetFirstAvailableSlot(src)
 
     return tostring(1)
 end
-
-
-
 
 lib.callback.register('LegacyCore:DATA:GetPlayerDataBySlot', function(source)
     return Legacy.DATA:GetPlayerDataBySlot(source)
@@ -204,3 +209,5 @@ lib.callback.register('LegacyCore:GetPlayerStatus', function(source)
         hunger = statusData.hunger
     }
 end)
+
+

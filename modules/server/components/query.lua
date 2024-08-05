@@ -41,6 +41,7 @@ if Config.QueryData.CreateUsersAndDB then
     CreateDatabaseAndUsersTable()
 end
 
+
 local function GenerateNewCharIdentifier(existingCharIdentifiers)
     local maxNumber = 0
     for _, row in ipairs(existingCharIdentifiers) do
@@ -61,8 +62,6 @@ local function tableIncludes(tbl, value)
     return false
 end
 
-
-
 local function IsAdmin(identifier)
     local defaultGroup = Config.GroupData.FirstGroupAssigned
     local playerGroup = defaultGroup
@@ -78,7 +77,6 @@ local function IsAdmin(identifier)
             break
         end
     end
-
 
     if not tableIncludes(Config.GroupData.GroupCore, playerGroup) then
         playerGroup = defaultGroup
@@ -105,8 +103,7 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
     })
 
     -- Check char identifier match with this char
-    local existingCharIdentifiers = MySQL.query.await('SELECT `charIdentifier` FROM `users` WHERE `identifier` = ?',
-        { identifier })
+    local existingCharIdentifiers = MySQL.query.await('SELECT `charIdentifier` FROM `users` WHERE `identifier` = ?',{ identifier })
 
     local newCharIdentifier = slot or GenerateNewCharIdentifier(existingCharIdentifiers)
 
@@ -147,7 +144,7 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
         inventory = {},
     }
     lib.TriggerClientEvent('LegacyCore:LGF_OxCharacter:RiempiTable', src, PlayerData)
-    -- StartInventoryPack(src)
+
 end)
 
 RegisterNetEvent('LEGACYCORE:QUERY:UpdateAppearance', function(appearance, slot)

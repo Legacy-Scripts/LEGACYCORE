@@ -6,35 +6,26 @@ AddEventHandler('playerDropped', function()
     local src = source
     TriggerEvent('LegacyCore:PlayerLogout', src)
     lib.TriggerClientEvent('LegacyCore:PlayerLogout', src)
-
-    if IsLoaded[src] then
-        IsLoaded[src] = false
-    else
-        print('Player data not saved because player is not loaded.')
-    end
 end)
 
 RegisterNetEvent('LegacyCore:PlayerLogout', function()
     local src = source
-    local SHARED = require 'modules.shared.shared_functions'
+
     if not UTILS:IsEventAuthorized('LegacyCore:PlayerLogout') then
         print(('Unauthorized attempt to trigger %s by %s'):format('LegacyCore:PlayerLogout', src))
         return
     end
 
-    IsLoaded[src] = false
+    IsLoaded[src] = nil
     Slots[src] = nil
-    SHARED.DebugData(('IsLoaded[%s] set to false'):format(src))
 end)
 
 RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data)
-    print(string.format('Player Loded In Server Side With Slot Used %s', slot))
-    print('my data server side', data)
+
     local SHARED = require 'modules.shared.shared_functions'
     local src = source
     if not UTILS:IsEventAuthorized('LegacyCore:PlayerLoaded') then
         print(('Unauthorized attempt to trigger %s by %s'):format('LegacyCore:PlayerLoaded', src))
-
         return
     end
 
@@ -51,7 +42,6 @@ exports('isLoadedServer', function(src)
 end)
 
 
-
 function Legacy.DATA:GetSlotSelected(source)
     return Slots[source]
 end
@@ -62,10 +52,7 @@ function CHECK:SetPaycheck(src, slot)
 
     if not IsLoaded[src] then return end
 
-    if not PlayerData then
-        print(('Player data not found for slot %s'):format(slot))
-        return
-    end
+    if not PlayerData then return end
 
     local PlayerJob = PlayerData.JobName
     local PlayerGrade = PlayerData.JobGrade
@@ -127,9 +114,9 @@ RegisterNetEvent('LegacyCore:StartInventoryPack', function(sour, slot)
             local success, response = exports.ox_inventory:AddItem(sour, itemName, itemCount)
             if not success then
                 if response == "invalid_item" then
-                    print(string.format("Failed to add item '%s': item does not exist.", itemName))
+                    SHARED.DebugData(("Failed to add item '%s': item does not exist."):format(itemName))
                 elseif response == "invalid_inventory" then
-                    print("Failed to add item: inventory does not exist.")
+                    SHARED.DebugData("Failed to add item: inventory does not exist.")
                 else
                     SHARED.DebugData(("Failed to add item %s:"):format(response))
                 end
