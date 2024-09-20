@@ -2,9 +2,6 @@ NOTIFY = {}
 UTILS = {}
 local eventWhitelist = {}
 
-
-
-
 function NOTIFY:SendServerNotification(source, title, msg, icon, duration, tipo)
     TriggerClientEvent('ox_lib:notify', source, {
         title = title or 'Legacy Core',
@@ -73,32 +70,3 @@ end
 RegisterNetEvent('Legacy:DATA:SendWebhook', function(webhookURL, embedData)
     UTILS:CreateNewEmbed(webhookURL, embedData)
 end)
-
-
-local function CheckForIncompatibleResources()
-    local stateHipster = GetResourceState("fivem-map-hipster")
-    if stateHipster == "started" or stateHipster == "starting" then
-        print(string.format("^1[ERROR] 'fivem-map-hipster' is currently %s. This resource conflicts with LegacyCore and must be removed.^0", stateHipster))
-        StopResource('fivem-map-hipster')
-    end
-
-    local stateSkater = GetResourceState("fivem-map-skater")
-    if stateSkater == "started" or stateSkater == "starting" then
-        print(string.format("^1[ERROR] 'fivem-map-skater' is currently %s. This resource conflicts with LegacyCore and must be removed.^0", stateSkater))
-        StopResource('fivem-map-skater')
-    end
-
-    local stateRedm = GetResourceState("redm-map-one")
-    if stateRedm == "started" or stateRedm == "starting" then
-        print(string.format("^1[ERROR] 'redm-map-one' is currently %s. This resource conflicts with LegacyCore and must be removed.^0", stateRedm))
-        StopResource('redm-map-one')
-    end
-end
-
-local timer = lib.timer(10000, function()
-    CheckForIncompatibleResources()
-end)
-
-
-
-

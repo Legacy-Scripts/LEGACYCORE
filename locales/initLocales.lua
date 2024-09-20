@@ -7,7 +7,7 @@ function LANG.CoreLang(key)
 end
 
 function LANG.GetCurrentLocale()
-    return Config.CoreInfo.Locales 
+    return Config.Locales 
 end
 
 function LANG.LoadLocales()

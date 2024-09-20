@@ -1,5 +1,3 @@
-local Exec = ExecuteCommand
-
 lib.addCommand(Config.Command.CreateVehicle, {
     help = LANG.CoreLang('CreateVehicle_Help'),
     params = {
@@ -137,7 +135,7 @@ lib.addCommand(Config.Command.SetJob, {
             LANG.CoreLang('NoPermission_Notification_Message'), 'ban', 5000, 'error')
     end
 end)
--- RegisterConsoleListener('')
+
 
 lib.addCommand(Config.Command.SetGroup, {
     help = LANG.CoreLang('SetGroup_Help'),
@@ -157,10 +155,12 @@ lib.addCommand(Config.Command.SetGroup, {
     },
 }, function(source, args, raw)
     local targetPlayer = args.playerid
-    local newGroupName = args.groupname
+    local groupName = args.groupname
+
 
     local isConsole = (source == 0 or source == nil)
-    local hasPermission = isConsole or (Legacy.DATA:GetPlayerGroup(source) and Config.GroupData.AdminGroup[Legacy.DATA:GetPlayerGroup(source)])
+    local hasPermission = isConsole or
+        (Legacy.DATA:GetPlayerGroup(source) and Config.GroupData.AdminGroup[Legacy.DATA:GetPlayerGroup(source)])
 
     if hasPermission then
         if not targetPlayer then
@@ -178,41 +178,28 @@ lib.addCommand(Config.Command.SetGroup, {
                 NOTIFY:SendServerNotification(source, LANG.CoreLang('PlayerNotOnline_Notification_Title'),
                     LANG.CoreLang('PlayerNotOnline_Notification_Message'):format(targetPlayer), 'info', 5000, 'inform')
             else
-                print(string.format('Player with ID %s is not online', targetPlayer))
+                print(LANG.CoreLang('PlayerNotOnline_Notification_Message'):format(targetPlayer))
             end
             return
         end
 
         local PlayerData = Legacy.DATA:GetPlayerDataBySlot(targetPlayer)
-        local PlayerIdentifier = PlayerData?.identifier
+        local PlayerIdentifier = PlayerData.identifier
         local PlayerSlot = Legacy.DATA:GetPlayerCharSlot(targetPlayer)
-        local oldGroupName = Legacy.DATA:GetPlayerGroup(targetPlayer) or 'player'
-
-        if newGroupName == 'player' then
-            if oldGroupName ~= 'player' then
-                lib.removePrincipal(("identifier.%s"):format(PlayerIdentifier), ("group.%s"):format(oldGroupName))
-            end
-        else
-            if oldGroupName ~= 'player' then
-                lib.removePrincipal(("identifier.%s"):format(PlayerIdentifier), ("group.%s"):format(oldGroupName))
-            end
-            lib.addPrincipal(("identifier.%s"):format(PlayerIdentifier), ("group.%s"):format(newGroupName))
-        end
-
 
         MySQL.update('UPDATE users SET playerGroup = ? WHERE identifier = ? AND charIdentifier = ?',
-            { newGroupName, PlayerIdentifier, PlayerSlot },
+            { groupName, PlayerIdentifier, PlayerSlot },
             function(affectedRows)
                 if affectedRows then
                     if Config.EnableDebug then
-                        print(("User with ID '%d' group updated to '%s'."):format(targetPlayer, newGroupName))
+                        print(("User with ID '%d' group updated to '%s'."):format(targetPlayer, groupName))
                     end
                     if not isConsole then
                         NOTIFY:SendServerNotification(source, LANG.CoreLang('SetGroup_Success_Title'),
-                            LANG.CoreLang('SetGroup_Success_Message'):format(targetPlayer, newGroupName), 'check', 5000,
+                            LANG.CoreLang('SetGroup_Success_Message'):format(targetPlayer, groupName), 'check', 5000,
                             'success')
                     else
-                        print(LANG.CoreLang('SetGroup_Success_Message'):format(targetPlayer, newGroupName))
+                        print(LANG.CoreLang('SetGroup_Success_Message'):format(targetPlayer, groupName))
                     end
                 else
                     print(("Failed to update user with ID '%d' group."):format(targetPlayer))
@@ -229,11 +216,11 @@ lib.addCommand(Config.Command.SetGroup, {
     end
 end)
 
-
 lib.addCommand(Config.Command.MyInfo, {
     help = 'Get My Info',
 
 }, function(source, args, raw)
     local PlayerData = Legacy.DATA:GetPlayerDataBySlot(source)
     lib.triggerClientEvent('LegacyCore:PrintPlayerInfo', source, PlayerData)
+    
 end)

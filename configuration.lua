@@ -1,14 +1,15 @@
 Config = {}
 
+-- Localization setting
+Config.Locales = 'it'
 -- Core configuration information
 Config.CoreInfo = {
-    Locales            = GetConvar('LegacyCore.Locales', 'it'),
-    -- Enable or Disable PVP mode for attacking all other players
-    EnablePVPmode      = GetConvar('LegacyCore.EnablePVPMode', "true"),
-    -- Disable Wanted Level in server
-    DisableWantedLevel = GetConvar('LegacyCore.DisableWantedLevel', "true"),
     -- Enable debug print and other data
     EnableDebug        = true,
+    -- Enable or Disable PVP mode for attacking all other players
+    EnablePVPmode      = true,
+    -- Disable Wanted Level in server
+    DisableWantedLevel = true,
     -- Status data configuration
     StatusData         = {
         -- Enable decrease for hunger and thirst
@@ -27,7 +28,7 @@ Config.CoreInfo = {
         -- Enable or disable payment for players
         EnablePaycheck    = true,
         -- Time in seconds for paycheck
-        ThicknessPaycheck = 20
+        ThicknessPaycheck = 1000
     }
 }
 
@@ -62,12 +63,17 @@ Config.ConnectionData = {
     CheckLicense = true
 }
 
+-- Admin identifiers with direct access to the admin group
+Config.AdminIdentifier = {
+    'license:5c54fbccfc7d92223ebc3dwawe63fec67771759a704a'
+}
+
 -- Database configuration
 Config.QueryData = {
     -- Specific database name
     NameDB           = 'LegacyCore',
     -- Automatically create database and users table (CHECK README.MD)
-    CreateUsersAndDB = false
+    CreateUsersAndDB = true
 }
 
 -- Command configuration
@@ -86,7 +92,7 @@ Config.GroupData = {
     -- Default group when player creates a new character
     FirstGroupAssigned = 'player',
     -- Framework groups
-    GroupCore          = { 'owner', 'admin', 'mod', 'player' },
+    GroupCore          = { 'admin', 'mod', 'player' },
     -- Job data settings
     JobData            = {
         -- First job assigned to a player
@@ -98,10 +104,8 @@ Config.GroupData = {
     },
     -- Admin group settings
     AdminGroup         = {
-        ['owner']  = true, -- Owner
-        ['admin']  = true, -- Admin
-        ['mod']    = true, -- Moderator
-        ['player'] = false -- Player
+        ['admin'] = true, -- Admin
+        ['mod']   = false -- Moderator
     }
 }
 
@@ -110,6 +114,6 @@ Config.ReturnIsDead = function()
     if GetResourceState('ars_ambulancejob'):find('start') then
         return LocalPlayer.state.dead
     else
-
+        return IsEntityDead(cache.ped)
     end
 end

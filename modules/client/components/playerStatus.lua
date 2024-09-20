@@ -43,23 +43,6 @@ function Legacy.DATA:DecreasePlayerStatus()
     end
 end
 
-PlayerStatus = {}
-local SLOT = nil
-
-AddEventHandler('LegacyCore:PlayerLoaded', function(slot, playerdata, new)
-    if playerdata and playerdata.status then
-        Legacy.PLAYERSTATUS.Thirst = playerdata.status.thirst
-        Legacy.PLAYERSTATUS.Hunger = playerdata.status.hunger
-
-        SLOT = slot
-        
-        PlayerStatus[SLOT] = { hunger = Legacy.PLAYERSTATUS.Hunger, thirst = Legacy.PLAYERSTATUS.Thirst }
-
-        LocalPlayer.state:set('GetCharStatus', PlayerStatus, true)
-    end
-end)
-
-
 if Config.CoreInfo.StatusData.EnableDecrease then
     Citizen.CreateThread(function()
         while true do
@@ -77,16 +60,10 @@ if Config.CoreInfo.StatusData.EnableDecrease then
             if Legacy.DATA:IsPlayerLoaded() then
                 TriggerServerEvent('Legacy:QUERY:SavePlayerStatus', cache.serverId, Legacy.PLAYERSTATUS.Hunger,
                     Legacy.PLAYERSTATUS.Thirst)
-                PlayerStatus[SLOT] = {
-                    hunger = Legacy.PLAYERSTATUS.Hunger,
-                    thirst = Legacy.PLAYERSTATUS.Thirst,
-                }
-                LocalPlayer.state:set('GetCharStatus', PlayerStatus, true)
             end
         end
     end)
 end
-
 
 
 

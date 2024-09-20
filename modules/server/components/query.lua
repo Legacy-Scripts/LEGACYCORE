@@ -103,7 +103,8 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
     })
 
     -- Check char identifier match with this char
-    local existingCharIdentifiers = MySQL.query.await('SELECT `charIdentifier` FROM `users` WHERE `identifier` = ?',{ identifier })
+    local existingCharIdentifiers = MySQL.query.await('SELECT `charIdentifier` FROM `users` WHERE `identifier` = ?',
+        { identifier })
 
     local newCharIdentifier = slot or GenerateNewCharIdentifier(existingCharIdentifiers)
 
@@ -143,8 +144,8 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
         source = src,
         inventory = {},
     }
-    lib.TriggerClientEvent('LegacyCore:LGF_OxCharacter:RiempiTable', src, PlayerData)
 
+    lib.TriggerClientEvent('LegacyCore:LGF_CharacterSystem:RiempiTable', src, PlayerData)
 end)
 
 RegisterNetEvent('LEGACYCORE:QUERY:UpdateAppearance', function(appearance, slot)

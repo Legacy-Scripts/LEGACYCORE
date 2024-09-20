@@ -75,7 +75,7 @@ RegisterNetEvent('LegacyCore:DATA:TeleportPlayer', function()
 end)
 
 RegisterNetEvent('LegacyCore:DATA:StartUpdateAppearance', function()
-    local PlayerSlot = exports.LGF_OxCharacter:GetSLotCharacter()
+    local PlayerSlot = exports.LGF_OxCharacter:GetSlotCharacter()
     exports['fivem-appearance']:startPlayerCustomization(function(appearance)
         if appearance then
             TriggerServerEvent('LEGACYCORE:QUERY:UpdateAppearance', appearance, PlayerSlot)
@@ -91,12 +91,9 @@ RegisterNetEvent('LegacyCore:PrintPlayerInfo', function(data)
     else
         local infoString = string.format(
             "Source: ^6[%s]^7, Name: ^6[%s]^7, Group: ^6[%s]^7, Job: ^6[%s]^7, Slot: ^6[%s]^7, Grade: ^6[%s]^7",
-            tostring(cache.serverId),
-            tostring(data.playerName),
-            tostring(data.playerGroup),
-            tostring(data.JobLabel),
-            tostring(data.charIdentifier),
-            tostring(data.JobGrade)
+            tostring(cache.serverId),tostring(data.playerName),
+            tostring(data.playerGroup),tostring(data.JobLabel),
+            tostring(data.charIdentifier),tostring(data.JobGrade)
         )
         print(infoString)
     end

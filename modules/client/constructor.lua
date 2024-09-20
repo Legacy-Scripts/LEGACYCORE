@@ -5,15 +5,14 @@ PlayerManager.PlayerData = nil
 PlayerManager.PlayerStatus = nil
 PlayerManager.PlyState = LocalPlayer.state
 PlayerManager.PlayerLoaded = nil
-PlayerManager.CHARID = nil
+CHARID = nil
 
 function PlayerManager:constructor()
 end
 
 function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
-    if type(playerdata) ~= "table" then
-        error(string.format("Invalid playerdata: expected a table, got %s", type(playerdata)))
-    end
+ 
+    if type(playerdata) ~= "table" then error(string.format("Invalid playerdata: expected a table, got %s", type(playerdata))) end
 
     self.PlayerData = playerdata
 
@@ -22,12 +21,13 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
         Legacy.PLAYERCACHE[playerdata.source or cache.serverId] = self.PlayerData
     end
 
-    if Config.CoreInfo.EnablePVPmode == "true" then
+
+    if Config.CoreInfo.EnablePVPmode then
         SetCanAttackFriendly(playerdata.ped, true, false)
         NetworkSetFriendlyFireOption(true)
     end
 
-    if Config.CoreInfo.DisableWantedLevel == "true" then
+    if Config.CoreInfo.DisableWantedLevel then
         SetMaxWantedLevel(0)
     end
 
