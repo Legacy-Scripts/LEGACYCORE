@@ -4,7 +4,9 @@
 
 # IMPORTANT
 
-keep in mind, Download ox_inventory from the official ox repo and only replace the modules folder in inv_bridge to the path of ox_inventory ox_inventory/modules  to take advantage of the legacycore bridge
+keep in mind, Download [ox_inventory](https://github.com/overextended/ox_inventory/releases) from the official ox repo and only replace the modules folder in inv_bridge to the path of ox_inventory ox_inventory/modules  to take advantage of the legacycore bridge
+Same procedure for fivem appearance of wasabi
+
 
 # Legacy Core Installation
 
