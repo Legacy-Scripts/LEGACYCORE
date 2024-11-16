@@ -2,6 +2,10 @@
     <img src="https://img.shields.io/badge/LEGACYCORE-Creator%20%20ENT510-%23FF6F00" alt="Welcome Badge" />
 </p>
 
+# IMPORTANT
+
+keep in mind, Download ox_inventory from the official ox repo and only replace the modules folder in inv_bridge to the path of ox_inventory ox_inventory/modules  to take advantage of the legacycore bridge
+
 # Legacy Core Installation
 
 ## Installing Legacy Core
