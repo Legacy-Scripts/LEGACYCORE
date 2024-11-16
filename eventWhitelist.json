@@ -1,6 +1,0 @@
-{
-    "events": [
-        "LegacyCore:PlayerLogout",
-        "LegacyCore:PlayerLoaded"
-    ]
-}
