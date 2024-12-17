@@ -187,10 +187,6 @@ lib.callback.register('LegacyCore:GetPlayerStatus', function(source)
     end
 
     local statusData = json.decode(statusDataResult[1].status)
-    if not statusData then
-        print(("Impossible to decode status data for: %s"):format(Identifier))
-        return nil
-    end
 
     return {
         thirst = statusData.thirst,

@@ -12,8 +12,7 @@ end
 
 function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     if type(playerdata) ~= "table" then
-        error(string.format("Invalid playerdata: expected a table, got %s",
-            type(playerdata)))
+        error(string.format("Invalid playerdata: expected a table, got %s", type(playerdata)))
     end
 
     self.PlayerData = playerdata

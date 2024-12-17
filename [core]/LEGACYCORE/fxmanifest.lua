@@ -7,7 +7,7 @@ version '1.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua',
-    'configuration.lua',
+    'common/configuration.lua',
     'locales/initLocales.lua',
     'locales/lang/*.lua',
     'initcore.lua',
@@ -25,6 +25,7 @@ client_scripts {
 }
 
 server_scripts {
+    'common/sv-configuration.lua',
     'modules/server/components/connecting.lua',
     'modules/server/components/query.lua',
     'modules/server/components/utils.lua',

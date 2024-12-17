@@ -76,6 +76,7 @@ local function CheckForIncompatibleResources()
         StopResource('redm-map-one')
     end
 end
+
 local timer = lib.timer(20000, function()
     CheckForIncompatibleResources()
 end)

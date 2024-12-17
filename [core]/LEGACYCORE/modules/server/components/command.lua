@@ -159,8 +159,7 @@ lib.addCommand(Config.Command.SetGroup, {
 
 
     local isConsole = (source == 0 or source == nil)
-    local hasPermission = isConsole or
-        (Legacy.DATA:GetPlayerGroup(source) and Config.GroupData.AdminGroup[Legacy.DATA:GetPlayerGroup(source)])
+    local hasPermission = isConsole or (Legacy.DATA:GetPlayerGroup(source) and Config.GroupData.AdminGroup[Legacy.DATA:GetPlayerGroup(source)])
 
     if hasPermission then
         if not targetPlayer then

@@ -1,4 +1,7 @@
 local SHARED = require 'modules.shared.shared_functions'
+local ServerConfig = require "common.sv-configuration"
+
+
 local function CreateDatabaseAndUsersTable()
     local dbName = Config.QueryData.NameDB
     local createDatabaseQuery = 'CREATE DATABASE IF NOT EXISTS `' .. dbName .. '`'
@@ -87,17 +90,23 @@ local function IsAdmin(identifier)
     local defaultGroup = Config.GroupData.FirstGroupAssigned
     local playerGroup = defaultGroup
 
-    local IdentifierAllowed = json.decode(GetConvar('LegacyCore.Admins', '[]'))
+    if not ServerConfig.Admin or type(ServerConfig.Admin) ~= 'table' then
+        print("DEBUG: Admin table is empty or invalid.")
+        return defaultGroup
+    end
 
-    for _, adminData in ipairs(IdentifierAllowed) do
-        local adminIdentifier = adminData[1]
-        local adminGroup = adminData[2] or defaultGroup
+
+    for i = 1, #ServerConfig.Admin do
+        local adminData = ServerConfig.Admin[i]
+        local adminIdentifier = adminData.Identifier
+        local adminGroup = adminData.AssignedGroup or defaultGroup
 
         if identifier == adminIdentifier then
             playerGroup = adminGroup
             break
         end
     end
+
 
     if not tableIncludes(Config.GroupData.GroupCore, playerGroup) then
         playerGroup = defaultGroup
@@ -106,10 +115,7 @@ local function IsAdmin(identifier)
     return playerGroup
 end
 
-
-exports('GetResponseAdmin', IsAdmin)
-
-
+exports('IsAdmin', IsAdmin)
 
 RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, name, dob, appearance, slot)
     local identifier = GetPlayerIdentifierByType(src, 'license')
@@ -131,7 +137,6 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
 
     local playerGroup = IsAdmin(identifier)
 
-    print(playerGroup)
     local jobName = Config.GroupData.JobData.FirstJobAssigned
     local jobLabel = Config.GroupData.JobData.LabelJobAssigned
     local jobGrade = Config.GroupData.JobData.GradeJobAssigned
@@ -168,6 +173,8 @@ RegisterNetEvent('LEGACYCORE:QUERY:CreateCharId', function(src, sex, height, nam
 
     if GetResourceState("LGF_Char"):find("start") then
         lib.TriggerClientEvent('LegacyCore:LGF_CharacterSystem:RiempiTable', src, PlayerData)
+    elseif GetResourceState("A1-Multicharacter"):find("start") then
+        lib.TriggerClientEvent('LegacyCore:A1-Multicharacter:notEmptyTable', src, PlayerData)
     else
         lib.TriggerClientEvent('LegacyCore:LGF_OxCharacter:RiempiTable', src, PlayerData)
     end

@@ -67,6 +67,3 @@ function UTILS:CreateNewEmbed(webhookURL, embedData)
     end, 'POST', json.encode(embedData), { ['Content-Type'] = 'application/json' })
 end
 
-RegisterNetEvent('Legacy:DATA:SendWebhook', function(webhookURL, embedData)
-    UTILS:CreateNewEmbed(webhookURL, embedData)
-end)
