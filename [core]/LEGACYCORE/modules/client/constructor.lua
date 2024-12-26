@@ -60,19 +60,11 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     self.charIdentifier = slot
     self.PlayerLoaded = true
 
-    print("Debug: charIdentifier set to", self.charIdentifier)
-    print("Debug: PlayerLoaded set to", self.PlayerLoaded)
-
-
     LocalPlayer.state.isOnDuty = self.inDuty or false
 
-
-    print("Debug: Player isOnDuty:", LocalPlayer.state.isOnDuty)
-
-
     if new then
-        exports.LEGACYCORE:SetPlayerHunger(100)
-        exports.LEGACYCORE:SetPlayerThirst(100)
+        exports.LEGACYCORE:SetPlayerHunger(Config.HandlePlayer.StatusParameters.Hunger)
+        exports.LEGACYCORE:SetPlayerThirst(Config.HandlePlayer.StatusParameters.Thirst)
     end
 end
 
