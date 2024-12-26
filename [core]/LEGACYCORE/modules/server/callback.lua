@@ -2,7 +2,7 @@ lib.callback.register("LegacyCore.setPlayerBucket", function(source, data)
     if not data.target then data.target = source end
     if not data.bucket then data.bucket = source end
 
-    local result, bucket = Legacy.MAIN:setPlayerBucket(data)
+    local result, bucket = Legacy.MAIN:SetPlayerBucket(data)
 
     return result, bucket
 end)

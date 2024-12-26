@@ -119,13 +119,13 @@ end
 ---@param slot string - Character slot
 ---@return boolean? - True if successful, false otherwise
 function Legacy.DATA:SetPlayerData(src, key, value, slot)
-    if not src or not key or not value then return warn('Invalid parameters') end
+    if not src or not key or not value then  return warn('Invalid parameters')  end
     local playerData = Legacy.DATA:GetPlayerDataBySlot(src)
-    if not playerData then return warn('Player data not found!') end
+    if not playerData then  return warn('Player data not found!')  end
     local identifier = playerData.identifier
-    local success, error_message = MySQL.rawExecute.await(
-    'UPDATE `users` SET `' .. key .. '` = ? WHERE `identifier` = ? AND charIdentifier = ?', { value, identifier, slot })
-    if not success then return warn('Failed to update ' .. key .. ': ' .. tostring(error_message)) end
+    local query = ('UPDATE `users` SET `%s` = ? WHERE `identifier` = ? AND charIdentifier = ?'):format(key)
+    local success, error_message = MySQL.rawExecute.await(query, { value, identifier, slot })
+    if not success then  return warn(('Failed to update %s: %s'):format(key, tostring(error_message))) end
     return true
 end
 

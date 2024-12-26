@@ -67,7 +67,7 @@ function Legacy.MAIN:GetPlayerBucket(target)
     return current_bucket
 end
 
-function Legacy.MAIN:setPlayerBucket(data)
+function Legacy.MAIN:SetPlayerBucket(data)
     local lockdownType = data.restriction and data.restriction.lockdownType or false
     local enablePopulation = data.enablePopulation or true
     local bucket_id = data.bucket

@@ -78,7 +78,7 @@ function Legacy.MAIN:SendClientNotification(title, msg, icon, duration, tipo)
     })
 end
 
-function Legacy.MAIN.setPlayerBucket(data)
+function Legacy.MAIN.SetPlayerBucket(data)
     local result, current_bucket = lib.callback.await("LegacyCore.setPlayerBucket", 100, data)
     return result, current_bucket
 end
