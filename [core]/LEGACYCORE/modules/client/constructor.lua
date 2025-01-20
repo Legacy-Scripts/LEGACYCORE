@@ -7,6 +7,7 @@ PlayerManager.PlayerLoaded = nil
 
 
 function PlayerManager:constructor(data)
+    print(json.encode(data, { indent = true }))
     self.charIdentifier = data.charIdentifier or nil
     self.playerGroup = data.playerGroup or "player"
     self.JobName = data.JobName or "unemployed"
@@ -14,7 +15,7 @@ function PlayerManager:constructor(data)
     self.JobGrade = data.JobGrade or 0
     self.is_dead = data.is_dead or false
     self.accounts = data.accounts or { Bank = 0, money = 0 }
-    self.status = data.status or { hunger = 100, thirst = 100 }
+    self.status = data.status
     self.identifier = data.identifier or nil
     self.sex = data.sex or nil
     self.dob = data.dob or nil
@@ -50,16 +51,22 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     end
 
 
-    self.PlayerData.charIdentifier = slot
-    self.PlayerData.PlayerLoaded = true
+    self.charIdentifier = slot
+    self.PlayerLoaded = true
 
     LocalPlayer.state.isOnDuty = self.PlayerData.inDuty or false
 
 
     if new then
+        print("New player, setting initial hunger and thirst...")
         exports.LEGACYCORE:SetPlayerHunger(Config.HandlePlayer.StatusParameters.Hunger)
         exports.LEGACYCORE:SetPlayerThirst(Config.HandlePlayer.StatusParameters.Thirst)
+    else
+        print("Player already loaded, setting hunger and thirst from player data...")
+        exports.LEGACYCORE:SetPlayerHunger(playerdata.status.hunger)
+        exports.LEGACYCORE:SetPlayerThirst(playerdata.status.thirst)
     end
+
 
     if GetResourceState("Revoria_Welcome"):find("start") then
         SetTimeout(3000, function()
