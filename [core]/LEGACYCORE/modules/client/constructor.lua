@@ -7,7 +7,6 @@ PlayerManager.PlayerLoaded = nil
 
 
 function PlayerManager:constructor(data)
-
     self.charIdentifier = data.charIdentifier or nil
     self.playerGroup = data.playerGroup or "player"
     self.JobName = data.JobName or "unemployed"
@@ -58,11 +57,9 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
 
 
     if new then
-        print("New player, setting initial hunger and thirst...")
         exports.LEGACYCORE:SetPlayerHunger(Config.HandlePlayer.StatusParameters.Hunger)
         exports.LEGACYCORE:SetPlayerThirst(Config.HandlePlayer.StatusParameters.Thirst)
     else
-        print("Player already loaded, setting hunger and thirst from player data...")
         exports.LEGACYCORE:SetPlayerHunger(playerdata.status.hunger)
         exports.LEGACYCORE:SetPlayerThirst(playerdata.status.thirst)
     end
