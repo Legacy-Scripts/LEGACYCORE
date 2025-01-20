@@ -10,9 +10,9 @@ end)
 function client.setPlayerStatus(values)
     for name, value in pairs(values) do
         if name == 'thirst' then
-            Legacy.DATA:SetPlayerThirst(value)
+            Legacy.DATA:UpdateStatus('thirst', math.random(10, 20))
         elseif name == 'hunger' then
-            Legacy.DATA:SetPlayerHunger(value)
+            Legacy.DATA:UpdateStatus('hunger', math.random(10, 20))
         end
     end
 end
