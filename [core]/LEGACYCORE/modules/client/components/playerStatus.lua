@@ -6,7 +6,7 @@ function Legacy.DATA:SetPlayerStatus(status, value)
     elseif status == 'hunger' then
         Legacy.PLAYERSTATUS.Hunger = value
     else
-        print("Unknown status type: " .. tostring(status))
+        print(("Unknown status type: %s "):format(tostring(status)))
     end
 end
 
@@ -63,9 +63,25 @@ if Config.CoreInfo.StatusData.EnableDecrease then
     end)
 end
 
+function Legacy.DATA:UpdateStatus(status, change)
+    if status == 'hunger' then
+        local newHunger = Legacy.PLAYERSTATUS.Hunger + change
+        Legacy.PLAYERSTATUS.Hunger = math.min(math.max(newHunger, 0), 100)
+    elseif status == 'thirst' then
+        local newThirst = Legacy.PLAYERSTATUS.Thirst + change
+        Legacy.PLAYERSTATUS.Thirst = math.min(math.max(newThirst, 0), 100)
+    else
+        print(("Unknown status type: %s "):format(tostring(status)))
+    end
+end
 
+-- Update Value
+exports("UpdatePlayerStatus", function(status, value) return Legacy.DATA:UpdateStatus(status, value) end)
 
+-- Set Value
+exports('SetPlayerHunger', function(value) return Legacy.DATA:SetPlayerHunger(value) end)
+exports('SetPlayerThirst', function(value) return Legacy.DATA:SetPlayerThirst(value) end)
+
+-- Get Value
 exports('GetPlayerHunger', function() return Legacy.PLAYERSTATUS.Hunger end)
 exports('GetPlayerThirst', function() return Legacy.PLAYERSTATUS.Thirst end)
-exports('SetPlayerHunger', function(value) return Legacy.DATA:SetPlayerHunger(value)end)
-exports('SetPlayerThirst', function(value)return Legacy.DATA:SetPlayerThirst(value)end)
