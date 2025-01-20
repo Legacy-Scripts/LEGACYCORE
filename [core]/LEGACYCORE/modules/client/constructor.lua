@@ -7,21 +7,21 @@ PlayerManager.PlayerLoaded = nil
 
 
 function PlayerManager:constructor(data)
-    self.charIdentifier = data.newCharIdentifier or nil
+    self.charIdentifier = data.charIdentifier or nil
     self.playerGroup = data.playerGroup or "player"
-    self.JobName = data.jobName or "unemployed"
-    self.JobLabel = data.jobLabel or "Unemployed"
-    self.JobGrade = data.jobGrade or 0
+    self.JobName = data.JobName or "unemployed"
+    self.JobLabel = data.JobLabel or "Unemployed"
+    self.JobGrade = data.JobGrade or 0
     self.is_dead = data.is_dead or false
-    self.accounts = data.accounts or {}
-    self.status = data.status or {}
+    self.accounts = data.accounts or { Bank = 0, money = 0 }
+    self.status = data.status or { hunger = 100, thirst = 100 }
     self.identifier = data.identifier or nil
     self.sex = data.sex or nil
     self.dob = data.dob or nil
     self.height = data.height or nil
-    self.playerName = data.name or nil
-    self.skin = data.appearance or {}
-    self.source = data.src or nil
+    self.playerName = data.playerName or nil
+    self.skin = data.skin or {}
+    self.source = data.source or nil
     self.inventory = {}
     self.inDuty = data.inDuty or false
 end
@@ -33,18 +33,11 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
 
     local __istance = PlayerManager:new(playerdata)
 
-    if __istance then
-        print("Debug: PlayerManager instance created successfully")
-    else
-        print("Debug: PlayerManager instance creation failed")
-    end
-
     self.PlayerData = __istance
 
 
     if self.PlayerData then
         self.PlyState:set('GetPlayerObject', self.PlayerData, true)
-        print("Debug: Player state set with GetPlayerObject")
     end
 
     if Config.CoreInfo.EnablePVPmode then
@@ -57,14 +50,25 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     end
 
 
-    self.charIdentifier = slot
-    self.PlayerLoaded = true
+    self.PlayerData.charIdentifier = slot
+    self.PlayerData.PlayerLoaded = true
 
-    LocalPlayer.state.isOnDuty = self.inDuty or false
+    LocalPlayer.state.isOnDuty = self.PlayerData.inDuty or false
+
 
     if new then
         exports.LEGACYCORE:SetPlayerHunger(Config.HandlePlayer.StatusParameters.Hunger)
         exports.LEGACYCORE:SetPlayerThirst(Config.HandlePlayer.StatusParameters.Thirst)
+    end
+
+    if GetResourceState("Revoria_Welcome"):find("start") then
+        SetTimeout(3000, function()
+            exports.Revoria_Welcome:sendWelcomePrompt({
+                PlayerName = playerdata.playerName,
+                Message = "Welcome To Revoria",
+                Duration = 5000,
+            })
+        end)
     end
 end
 
