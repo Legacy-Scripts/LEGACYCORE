@@ -7,7 +7,7 @@ PlayerManager.PlayerLoaded = nil
 
 
 function PlayerManager:constructor(data)
-    print(json.encode(data, { indent = true }))
+
     self.charIdentifier = data.charIdentifier or nil
     self.playerGroup = data.playerGroup or "player"
     self.JobName = data.JobName or "unemployed"
