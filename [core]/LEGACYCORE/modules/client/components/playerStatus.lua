@@ -11,13 +11,11 @@ function Legacy.DATA:SetPlayerStatus(status, value)
 end
 
 function Legacy.DATA:SetPlayerHunger(value)
-    local hunger = Legacy.PLAYERSTATUS.Hunger
-    Legacy.PLAYERSTATUS.Hunger = math.min(hunger + value / 10000, 100)
+    Legacy.PLAYERSTATUS.Hunger = math.min(value, 100)
 end
 
 function Legacy.DATA:SetPlayerThirst(value)
-    local thirst = Legacy.PLAYERSTATUS.Thirst
-    Legacy.PLAYERSTATUS.Thirst = math.min(thirst + value / 10000, 100)
+    Legacy.PLAYERSTATUS.Thirst = math.min(value, 100)
 end
 
 function Legacy.DATA:DecreasePlayerStatus()
@@ -69,5 +67,5 @@ end
 
 exports('GetPlayerHunger', function() return Legacy.PLAYERSTATUS.Hunger end)
 exports('GetPlayerThirst', function() return Legacy.PLAYERSTATUS.Thirst end)
-exports('SetPlayerHunger', function(value) return Legacy.DATA:SetPlayerHunger(value * 100000) end)
-exports('SetPlayerThirst', function(value) return Legacy.DATA:SetPlayerThirst(value * 100000) end)
+exports('SetPlayerHunger', function(value) return Legacy.DATA:SetPlayerHunger(value)end)
+exports('SetPlayerThirst', function(value)return Legacy.DATA:SetPlayerThirst(value)end)
