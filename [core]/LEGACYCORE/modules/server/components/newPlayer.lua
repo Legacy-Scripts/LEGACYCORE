@@ -108,6 +108,9 @@ end
 
 exports('IsAdmin', IsAdmin)
 
+
+
+
 local function createCharacter(data)
     local src = data.src
     local sex = data.sex
@@ -164,8 +167,10 @@ local function createCharacter(data)
     while not success do Wait(500) end
 
     lib.TriggerClientEvent('LegacyCore:PlayerLoaded', src, slot, data, true)
-
 end
+
+
+
 
 
 function insertCharacterData(data)

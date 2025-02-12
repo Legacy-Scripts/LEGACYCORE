@@ -82,9 +82,6 @@ function Legacy.MAIN:SetPlayerBucket(data)
         return false, current_bucket
     end
 
-    if bucket_id <= 0 then
-        return false, ("Bucket starts from 0, not a negative value")
-    end
 
     SetPlayerRoutingBucket(target, bucket_id)
     SetRoutingBucketPopulationEnabled(bucket_id, enablePopulation)

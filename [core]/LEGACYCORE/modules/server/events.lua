@@ -19,17 +19,17 @@ RegisterNetEvent('LegacyCore:PlayerLogout', function()
 end)
 
 RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data)
-    print(string.format('Player Loded In Server Side With Slot Used %s', slot))
-    print('my data server side', data)
     local SHARED = require 'modules.shared.shared_functions'
     local src = source
 
     Slots[src] = slot
     IsLoaded[src] = true
     SHARED.DebugData(('IsLoaded[%s] set to true'):format(src))
-    SetTimeout(10000, function()
-        Legacy.DATA:SetPaycheck(src, slot)
-    end)
+    if Config.CoreInfo.PayCheck.EnablePaycheck then
+        SetTimeout(10000, function()
+            Legacy.DATA:SetPaycheck(src, slot)
+        end)
+    end
 end)
 
 exports('isLoadedServer', function(src)

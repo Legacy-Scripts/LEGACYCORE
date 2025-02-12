@@ -5,7 +5,7 @@ Config.Locales = 'en'
 -- Core configuration information
 Config.CoreInfo = {
     -- Enable debug print and other data
-    EnableDebug        = true,
+    EnableDebug        = false,
     -- Enable or Disable PVP mode for attacking all other players
     EnablePVPmode      = true,
     -- Disable Wanted Level in server
@@ -26,7 +26,7 @@ Config.CoreInfo = {
     -- Paycheck for player job configuration
     PayCheck           = {
         -- Enable or disable payment for players
-        EnablePaycheck    = true,
+        EnablePaycheck    = false,
         -- Time in seconds for paycheck
         ThicknessPaycheck = 1000
     }
@@ -66,7 +66,7 @@ Config.ConnectionData = {
 -- Database configuration
 Config.QueryData = {
     -- Specific database name
-    NameDB           = 'apocalypse',
+    NameDB           = 'revoria',
     -- Automatically create database and users table (CHECK README.MD)
     CreateUsersAndDB = false
 }

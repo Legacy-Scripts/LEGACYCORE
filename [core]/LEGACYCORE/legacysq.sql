@@ -1,4 +1,6 @@
 
+
+
 CREATE TABLE IF NOT EXISTS `lgf_jobs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -8,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `lgf_jobs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 INSERT INTO `lgf_jobs` (`id`, `name`, `label`, `grade`, `paycheck`) VALUES
 	(32, 'police', 'Police Officer', 1, 4000),
@@ -21,6 +24,8 @@ INSERT INTO `lgf_jobs` (`id`, `name`, `label`, `grade`, `paycheck`) VALUES
 	(40, 'unemployed', 'Unemployed', 0, 500),
 	(42, 'Mechanic', 'mechanic', 1, 1000);
 
+
+-- Dump della struttura di tabella legacycore.lgf_society
 CREATE TABLE IF NOT EXISTS `lgf_society` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -29,11 +34,14 @@ CREATE TABLE IF NOT EXISTS `lgf_society` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 INSERT INTO `lgf_society` (`id`, `name`, `funds`, `shared`) VALUES
 	(5, 'police', 47878, 1),
 	(7, 'ambulance', 5000, 1),
 	(8, 'ems', 5000, 1);
 
+
+-- Dump della struttura di tabella legacycore.outfits
 CREATE TABLE IF NOT EXISTS `outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -46,6 +54,8 @@ CREATE TABLE IF NOT EXISTS `outfits` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+-- Dump della struttura di tabella legacycore.owned_vehicles
 CREATE TABLE IF NOT EXISTS `owned_vehicles` (
   `owner` longtext DEFAULT NULL,
   `plate` varchar(12) NOT NULL,
@@ -60,6 +70,8 @@ CREATE TABLE IF NOT EXISTS `owned_vehicles` (
   PRIMARY KEY (`plate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- Dump della struttura di tabella legacycore.ox_inventory
 CREATE TABLE IF NOT EXISTS `ox_inventory` (
   `owner` varchar(60) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
@@ -68,6 +80,8 @@ CREATE TABLE IF NOT EXISTS `ox_inventory` (
   UNIQUE KEY `owner` (`owner`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- Dump della struttura di tabella legacycore.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
