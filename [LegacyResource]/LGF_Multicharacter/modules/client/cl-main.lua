@@ -78,6 +78,7 @@ RegisterNUICallback("Revoria_Multicharacter.confirmCharacterCreation", function(
     lib.requestModel(Model)
 
     exports['fivem-appearance']:setPlayerModel(Model)
+
     Wait(359)
     if isPedFreemodeModel(cache.ped) then
         SetPedDefaultComponentVariation(cache.ped)
@@ -88,6 +89,8 @@ RegisterNUICallback("Revoria_Multicharacter.confirmCharacterCreation", function(
             SetPedHeadBlendData(cache.ped, 45, 21, 0, 20, 15, 0, 0.3, 0.1, 0, false)
         end
     end
+
+    SetEntityVisible(cache.ped, true)
 
     exports['fivem-appearance']:startPlayerCustomization(function(appearance)
         if appearance then
@@ -300,7 +303,6 @@ RegisterNetEvent('RevoriaMultichar:playerLogout', function()
         print("You can not Relog Now!")
     end
 end)
-
 
 AddEventHandler("onResourceStop", function(resource)
     if cache.resource == resource then
