@@ -1,10 +1,8 @@
 fx_version 'cerulean'
-
 game 'gta5'
-
 version '1.1.0'
-
 lua54 'yes'
+author "ENT510"
 
 shared_scripts {
   'shared/*.lua',
@@ -27,11 +25,8 @@ server_scripts {
 }
 
 files {
-  'locales/*.json',
   'web/build/index.html',
   'web/build/**/*',
 }
-
-ox_libs { 'locale' }
 
 ui_page 'web/build/index.html'
