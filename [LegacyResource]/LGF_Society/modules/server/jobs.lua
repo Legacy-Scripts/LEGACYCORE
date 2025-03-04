@@ -139,13 +139,16 @@ function Jobs:SetPlayerJob(id, jobName, jobGrade)
     local PlayerData = Legacy.DATA:GetPlayerDataBySlot(id)
     local PlayerIdentifier = PlayerData.identifier
     local PlayerSlot = Legacy.DATA:GetPlayerCharSlot(id)
-    print(PlayerSlot)
+    jobGrade = jobGrade or PlayerData.JobGrade
 
     self:GradeAndJobExists(jobName, jobGrade, function(exists)
         if exists then
             MySQL.update('UPDATE users SET JobName = ?, JobGrade = ? WHERE identifier = ? AND charIdentifier = ?',
                 { jobName, jobGrade, PlayerIdentifier, PlayerSlot },
                 function(affectedRows)
+                    TriggerEvent('LegacyCore:changeJob', -1, id, jobName, jobGrade)
+                    TriggerClientEvent('LegacyCore:changeJob', -1,  id, jobName, jobGrade)
+
                     if affectedRows > 0 then
                         if Config.EnableDebug then
                             print(("User with ID '%d' job updated to '%s' with grade '%d'."):format(id, jobName, jobGrade))
@@ -166,7 +169,6 @@ function Jobs:IsPlayerOnDuty(playerID)
 end
 
 function Jobs:SetPlayerOnDuty(playerID, onDuty)
-    print(playerID, onDuty)
     OnDutyPlayers[playerID] = onDuty
 end
 
@@ -216,7 +218,5 @@ end)
 RegisterNetEvent('LegacyCore:SetPlayerOnDuty', function(playerID, onDuty)
     Jobs:SetPlayerOnDuty(playerID, onDuty)
 end)
-
-
 
 return Jobs
