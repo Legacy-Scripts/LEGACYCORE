@@ -26,6 +26,14 @@ function PlayerManager:constructor(data)
     self.inDuty = data.inDuty or false
 end
 
+RegisterNetEvent('LegacyCore:changeJob', function(target, jobName, jobGrade, currJobData)
+    local self = PlayerManager
+    if not self.PlayerData then return end
+    self.PlayerData.JobName = jobName
+    self.PlayerData.JobGrade = jobGrade
+    self.PlyState:set("GetPlayerObject", self.PlayerData, true)
+end)
+
 function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     if type(playerdata) ~= "table" then
         error(string.format("Invalid playerdata: expected a table, got %s", type(playerdata)))
