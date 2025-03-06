@@ -140,14 +140,15 @@ function Jobs:SetPlayerJob(id, jobName, jobGrade)
     local PlayerIdentifier = PlayerData.identifier
     local PlayerSlot = Legacy.DATA:GetPlayerCharSlot(id)
     jobGrade = jobGrade or PlayerData.JobGrade
+    local currJob = {name = PlayerData.JobName, grade = PlayerData.JobGrade}
 
     self:GradeAndJobExists(jobName, jobGrade, function(exists)
         if exists then
             MySQL.update('UPDATE users SET JobName = ?, JobGrade = ? WHERE identifier = ? AND charIdentifier = ?',
                 { jobName, jobGrade, PlayerIdentifier, PlayerSlot },
                 function(affectedRows)
-                    TriggerEvent('LegacyCore:changeJob', -1, id, jobName, jobGrade)
-                    TriggerClientEvent('LegacyCore:changeJob', -1,  id, jobName, jobGrade)
+                    TriggerEvent('LegacyCore:changeJob', -1, id, jobName, jobGrade, currJob)
+                    TriggerClientEvent('LegacyCore:changeJob', -1,  id, jobName, jobGrade, currJob)
 
                     if affectedRows > 0 then
                         if Config.EnableDebug then
