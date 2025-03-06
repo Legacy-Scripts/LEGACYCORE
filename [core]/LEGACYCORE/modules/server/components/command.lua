@@ -116,6 +116,7 @@ lib.addCommand(Config.Command.SetJob, {
     local targetPlayer = args.playerid
     local jobName = args.jobname
     local jobGrade = args.grade
+    local currJob = Legacy.DATA:GetPlayerDataBySlot(targetPlayer)
     local PlayerGroup = Legacy.DATA:GetPlayerGroup(source)
     local GroupData = Config.GroupData.AdminGroup
     local Jobs = require '@LGF_Society.modules.server.jobs'
@@ -130,6 +131,8 @@ lib.addCommand(Config.Command.SetJob, {
             return
         end
         Jobs:SetPlayerJob(targetPlayer, jobName, jobGrade)
+        TriggerEvent('LegacyCore:changeJob', targetPlayer, id, jobName, jobGrade, currJob.JobName, currJob.JobGrade)             
+        TriggerClientEvent('LegacyCore:changeJob', targetPlayer, id, jobName, jobGrade, currJob.JobName, currJob.JobGrade)
     else
         Legacy.MAIN:SendServerNotification(source, LANG.CoreLang('NoPermission_Notification_Title'),
             LANG.CoreLang('NoPermission_Notification_Message'), 'ban', 5000, 'error')
