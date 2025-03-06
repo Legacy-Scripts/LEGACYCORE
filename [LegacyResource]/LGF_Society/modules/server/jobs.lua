@@ -180,8 +180,9 @@ end)
 
 
 
-lib.callback.register('LegacyCore:IsPlayerOnDuty', function(source)
-    return Jobs:IsPlayerOnDuty(source)
+lib.callback.register('LegacyCore:IsPlayerOnDuty', function(source, target)
+    local checkId = target or source
+    return Jobs:IsPlayerOnDuty(checkId)
 end)
 
 exports('CreateJob', function(name, label, grade, paycheck)
