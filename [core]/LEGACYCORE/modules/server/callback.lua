@@ -32,6 +32,9 @@ lib.callback.register('LegacyCore:GetPlayerStatus', function(source)
 
     local statusData = json.decode(statusDataResult[1].status)
 
+    TriggerClientEvent('LegacyCore:thickStatus', source, statusData.hunger, statusData.thirst, slot)
+
+
     return {
         thirst = statusData.thirst,
         hunger = statusData.hunger

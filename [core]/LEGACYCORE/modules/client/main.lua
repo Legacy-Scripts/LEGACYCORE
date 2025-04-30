@@ -83,3 +83,10 @@ function Legacy.MAIN.SetPlayerBucket(data)
     return result, current_bucket
 end
 
+function Legacy.MAIN.ToggleDriveBy(enabled)
+    if enabled then
+        SetPlayerCanDoDriveBy(PlayerId(), true)
+    else
+        SetPlayerCanDoDriveBy(PlayerId(), false)
+    end
+end

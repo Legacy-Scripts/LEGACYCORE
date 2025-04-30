@@ -19,7 +19,8 @@ end
 function Legacy.DATA:GetPlayerDataBySlot(src)
     local identifier = GetPlayerIdentifierByType(src, 'license')
     local slot = Legacy.DATA:GetSlotSelected(src)
-    local playerDatats = MySQL.query.await('SELECT * FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slot })
+    local playerDatats = MySQL.query.await('SELECT * FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?',
+        { identifier, slot })
     return playerDatats[1]
 end
 
@@ -119,13 +120,13 @@ end
 ---@param slot string - Character slot
 ---@return boolean? - True if successful, false otherwise
 function Legacy.DATA:SetPlayerData(src, key, value, slot)
-    if not src or not key or not value then  return warn('Invalid parameters')  end
+    if not src or not key or not value then return warn('Invalid parameters') end
     local playerData = Legacy.DATA:GetPlayerDataBySlot(src)
-    if not playerData then  return warn('Player data not found!')  end
+    if not playerData then return warn('Player data not found!') end
     local identifier = playerData.identifier
     local query = ('UPDATE `users` SET `%s` = ? WHERE `identifier` = ? AND charIdentifier = ?'):format(key)
     local success, error_message = MySQL.rawExecute.await(query, { value, identifier, slot })
-    if not success then  return warn(('Failed to update %s: %s'):format(key, tostring(error_message))) end
+    if not success then return warn(('Failed to update %s: %s'):format(key, tostring(error_message))) end
     return true
 end
 
@@ -138,7 +139,7 @@ end
 function Legacy.DATA:GetCharacterExist(src, slot)
     local identifier = GetPlayerIdentifierByType(src, 'license')
     local exists = MySQL.query.await(
-    'SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slot })
+        'SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slot })
     return exists[1].count > 0
 end
 
@@ -152,7 +153,9 @@ function Legacy.DATA:GetFirstAvailableSlot(src)
     local identifier = GetPlayerIdentifierByType(src, 'license')
 
     for slotNumber = 1, maxSlots do
-        local exists = MySQL.query.await('SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?', { identifier, slotNumber })
+        local exists = MySQL.query.await(
+            'SELECT COUNT(*) as count FROM `users` WHERE `identifier` = ? AND `charIdentifier` = ?',
+            { identifier, slotNumber })
         if exists[1].count == 1 then
             return tostring(slotNumber)
         end
@@ -161,5 +164,33 @@ function Legacy.DATA:GetFirstAvailableSlot(src)
     return tostring(1)
 end
 
+--[[
+    Legacy.DATA:GiveVehicle(src, props, stored)
+    Inserts a vehicle into the owned_vehicles table for the specified player.
+]]
+---@param src number - Source ID of the player
+---@param props table - Vehicle properties (plate, model, etc.)
+---@param stored boolean - Whether the vehicle is stored (true = stored, false = out)
+---@return boolean - True on success, false/nil on failure
+function Legacy.DATA:GiveVehicle(src, props, stored)
+    if not src or not props or not props.plate then
+        return false, warn('Invalid parameters for GiveVehicle')
+    end
 
+    local identifier = GetPlayerIdentifierByType(src, 'license')
+    if not identifier then
+        return false, warn('Player identifier not found')
+    end
 
+    local insertId = MySQL.insert.await(
+        'INSERT INTO owned_vehicles (owner, plate, vehicle, garage, stored) VALUES (?, ?, ?, ?, ?)',
+        { identifier, props.plate, json.encode(props), "A", stored and 1 or 0 }
+    )
+
+    if not insertId then
+        warn('Failed to insert vehicle into the database')
+        return false
+    end
+
+    return true
+end

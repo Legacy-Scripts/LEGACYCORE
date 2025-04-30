@@ -55,9 +55,6 @@ if Config.QueryData.CreateUsersAndDB then
     CreateDatabaseAndUsersTable()
 end
 
-
-
-
 local function GenerateNewCharIdentifier(existingCharIdentifiers)
     local maxNumber = 0
     for _, row in ipairs(existingCharIdentifiers) do

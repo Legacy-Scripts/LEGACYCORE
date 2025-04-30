@@ -58,6 +58,9 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
     end
 
 
+    Legacy.MAIN.ToggleDriveBy(true)
+
+
     self.charIdentifier = slot
     self.PlayerLoaded = true
 
@@ -82,6 +85,8 @@ function PlayerManager:handlePlayerLoaded(slot, playerdata, new)
             })
         end)
     end
+
+    self:handleRemoveDroop()
 end
 
 function PlayerManager:handlePlayerLogout()
@@ -90,6 +95,23 @@ function PlayerManager:handlePlayerLogout()
     self.PlayerLoaded = false
     self.charIdentifier = nil
     self.PlayerData = {}
+end
+
+function PlayerManager:handleRemoveDroop()
+    CreateThread(function()
+        while self.PlayerLoaded do
+            local coords = GetEntityCoords(cache.ped)
+            local PedPool = lib.getNearbyPeds(coords, 50.0)
+
+            for _, Ped in ipairs(PedPool) do
+                if Ped.ped ~= nil then
+                    SetPedDropsWeaponsWhenDead(Ped.ped, false)
+                end
+            end
+
+            Wait(2000)
+        end
+    end)
 end
 
 function PlayerManager:IsPlayerLoaded()
