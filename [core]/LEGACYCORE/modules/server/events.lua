@@ -18,7 +18,7 @@ RegisterNetEvent('LegacyCore:PlayerLogout', function()
     Slots[src] = nil
 end)
 
-RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data)
+RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data, isNew)
     local SHARED = require 'modules.shared.shared_functions'
     local src = source
 
@@ -29,6 +29,12 @@ RegisterNetEvent('LegacyCore:PlayerLoaded', function(slot, data)
         SetTimeout(10000, function()
             Legacy.DATA:SetPaycheck(src, slot)
         end)
+    end
+
+    if isNew then
+        Legacy.DATA:CharacterStarterPack({
+            target = src,
+        })
     end
 end)
 
@@ -132,7 +138,7 @@ function Legacy.DATA:CharacterStarterPack(data)
         local target = data.target
         if not target then target = source end
 
-        local success, response = exports.ox_inventory:AddItem(target, itemName, itemCount, metadata)
+        local success, response = exports.LGF_Inventory:addItem(target, itemName, itemCount, metadata)
 
 
         if not success then
@@ -142,3 +148,4 @@ function Legacy.DATA:CharacterStarterPack(data)
         end
     end
 end
+
