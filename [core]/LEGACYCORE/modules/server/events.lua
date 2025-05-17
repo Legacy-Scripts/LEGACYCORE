@@ -136,7 +136,7 @@ function Legacy.DATA:CharacterStarterPack(data)
         local metadata = data?.itemData and data?.itemData[i] and data?.itemData[i]?.metadata or nil
 
         local target = data.target
-        if not target then target = source end
+
 
         local success, response = exports.LGF_Inventory:addItem(target, itemName, itemCount, metadata)
 
